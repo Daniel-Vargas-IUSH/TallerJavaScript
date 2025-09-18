@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delegación de Eventos</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .eliminar-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lista de Tareas</h1>
+    <div id="root"></div>
+  </div>
+
+  <script>
+    const tareas = [
+      "Aprender DOM dinámico",
+      "Hacer ejercicio",
+      "Comprar comida",
+      "Leer un libro"
+    ];
+
+    const root = document.getElementById("root");
+    const lista = document.createElement("ul");
+
+    tareas.forEach(tarea => {
+      const elementoLista = document.createElement("li");
+      elementoLista.textContent = tarea;
+      
+      const botonEliminar = document.createElement("button");
+      botonEliminar.textContent = "Eliminar";
+      botonEliminar.className = "eliminar-btn";
+
+      elementoLista.appendChild(botonEliminar);
+      lista.appendChild(elementoLista);
+    });
+    
+    // Aqui es donde delegamos el evento
+    lista.addEventListener("click", (evento) => {
+        // Verificamos si el clic fue en un boton de "Eliminar"
+        if (evento.target.className === "eliminar-btn") {
+          // El 'parentElement' del boton es el <li>
+          const tareaAEliminar = evento.target.parentElement;
+          tareaAEliminar.remove();
+        }
+    });
+
+    root.appendChild(lista);
+  </script>
+</body>
+</html>

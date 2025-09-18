@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compras</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .products, .cart {
+      margin-top: 20px;
+    }
+    .product-item, .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .add-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tienda de Electrónicos</h1>
+    
+    <h2>Productos Disponibles</h2>
+    <div id="products-list" class="products"></div>
+
+    <h2>Carrito de Compras</h2>
+    <div id="cart-list" class="cart"></div>
+    <div id="cart-total"></div>
+  </div>
+
+  <script>
+    // Arreglo de productos disponibles
+    const productos = [
+      { id: 1, nombre: "Mouse", precio: 25000 },
+      { id: 2, nombre: "Teclado", precio: 60000 },
+      { id: 3, nombre: "Monitor", precio: 200000 }
+    ];
+
+    let carrito = [];
+
+    // Funcion para mostrar la lista de productos
+    function renderProducts() {
+      const productList = document.getElementById("products-list");
+      productList.innerHTML = ""; 
+      productos.forEach(producto => {
+        const item = document.createElement("div");
+        item.className = "product-item";
+        item.innerHTML = `
+          <span>${producto.nombre} - ${producto.precio}</span>
+          <button class="add-btn" onclick="agregarAlCarrito(${producto.id})">Agregar</button>
+        `;
+        productList.appendChild(item);
+      });
+    }
+
+    // Funcion para agregar un producto al carrito
+    function agregarAlCarrito(id) {
+      const productoExistente = carrito.find(p => p.id === id);
+      if (productoExistente) {
+        alert("El producto ya está en el carrito.");
+        return;
+      }
+      const productoAAgregar = productos.find(p => p.id === id);
+      if (productoAAgregar) {
+        carrito.push(productoAAgregar);
+        mostrarCarrito();
+      }
+    }
+
+    // Funcion para mostrar los productos del carrito y calcular el total
+    function mostrarCarrito() {
+      const cartList = document.getElementById("cart-list");
+      const cartTotal = document.getElementById("cart-total");
+      cartList.innerHTML = ""; 
+
+      let total = 0;
+      carrito.forEach(producto => {
+        const item = document.createElement("div");
+        item.className = "cart-item";
+        item.innerHTML = `<span>${producto.nombre} - $${producto.precio}</span>`;
+        cartList.appendChild(item);
+        total += producto.precio;
+      });
+
+      cartTotal.textContent = `Total del carrito: $${total}`;
+    }
+
+    // Inicializar la vista de productos
+    renderProducts();
+  </script>
+</body>
+</html>
